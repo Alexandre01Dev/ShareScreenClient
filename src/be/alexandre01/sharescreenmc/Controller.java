@@ -1,26 +1,37 @@
 package be.alexandre01.sharescreenmc;
 
+import javafx.animation.PathTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
+import javafx.scene.control.*;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import javafx.util.Duration;
 
-import java.awt.*;
+import java.io.IOException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 public class Controller {
     @FXML
@@ -28,11 +39,19 @@ public class Controller {
     @FXML
     private ImageView imageClose;
     @FXML
-    private ImageView imageMin;
+    private AnchorPane connection;
     @FXML
+    private ImageView imageMin;
+
+
     private double xOffset = 0;
     private double yOffset = 0;
+    @FXML
     private MenuBar menuBar;
+    @FXML
+    private TextField ip;
+    @FXML
+    private TextField port;
     @FXML
     void onButton(ActionEvent event) {
 
@@ -58,7 +77,37 @@ public class Controller {
 
     @FXML
     void onButtonClick(MouseEvent event) {
+    if(ip.getText().isEmpty()){
+        addAnnotation();
+        return;
     }
+        if(port.getText().isEmpty()){
+
+            addAnnotation();
+            return;
+        }
+        if(!port.getText().matches("^[0-9]+$")){
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Port area is invalid", ButtonType.OK);
+            alert.showAndWait();
+            return;
+        }
+                Node node = (Node) event.getSource();
+                Parent root = null;
+
+                    setConnection(true,connection);
+                   /* root = FXMLLoader.load(Main.class.getResource("/ressources/loading.fxml"));
+                    Stage stage = new Stage();
+                    stage.initStyle(StageStyle.UTILITY);
+                    stage.setTitle("Connection...");
+                    stage.setScene(new Scene(root));
+                    stage.show();*/
+
+
+
+                return;
+            }
+
+
 
 
     @FXML
@@ -106,6 +155,67 @@ public class Controller {
                 node.setEffect(null);
             }
         });
+    }
+    public void addAnnotation(){
+        Alert alert = new Alert(Alert.AlertType.WARNING, "Complete Adress and port area", ButtonType.OK);
+        alert.showAndWait();
+
+    }
+    public void setConnection(boolean isConnection,Node node){
+        if(isConnection){
+            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+            scheduler.scheduleAtFixedRate(new Runnable() {
+
+                double ms = 0.05;
+                @Override
+                public void run() {
+                    if(ms >= 0.7){
+                        System.out.println("yes");
+                        scheduler.shutdown();
+                    }
+                    System.out.println(ms);
+                    ms = ms + 0.01;
+                   node.setOpacity(ms);
+                }
+
+            }, 0, 5, TimeUnit.MILLISECONDS);
+
+        }else {
+            ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+            scheduler.scheduleAtFixedRate(new Runnable() {
+
+                double ms = 0.7;
+                @Override
+                public void run() {
+                    if(ms <= 0){
+                        System.out.println("yes");
+                        scheduler.shutdown();
+                    }
+                    System.out.println(ms);
+                    ms = ms - 0.01;
+                    node.setOpacity(ms);
+                }
+
+            }, 0, 5, TimeUnit.MILLISECONDS);
+        }
+    }
+
+    @FXML
+    void debugClicked(ActionEvent event) {
+        System.out.println("ok");
+        Parent root = null;
+        try {
+             root = FXMLLoader.load(Main.class.getResource("/ressources/debug.fxml"));
+            System.out.println("ok");
+            Stage stage = new Stage();
+            stage.initStyle(StageStyle.DECORATED);
+            stage.setTitle("DebugMode");
+            stage.setScene(new Scene(root));
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 
 }

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox prefHeight="0.0" prefWidth="409.0" style="-fx-background-color: linear-gradient(to right top, #729bda, #69bcde, #92d6d7, #caebd9, #fafff0);;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="be.alexandre01.sharescreenmc.window.ConnectionController">
+   <children>
+      <AnchorPane prefHeight="91.0" prefWidth="516.0">
+         <children>
+            <ImageView fitHeight="97.0" fitWidth="102.0" layoutX="-8.0" layoutY="-6.0">
+               <image>
+                  <Image url="loading.gif" />
+               </image>
+            </ImageView>
+            <Text fill="#fffafa" layoutX="105.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: linear-gradient(to right, #ffffff, #efefef, #e0e0e0, #d1d1d1, #c2c2c2);" text="Connection...">
+               <font>
+                  <Font name="Arial" size="42.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+   </children>
+</VBox>
